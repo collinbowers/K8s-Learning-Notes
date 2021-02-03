@@ -1,7 +1,7 @@
 # K8s-Learning-Notes
 My personal notes for learning Kubernetes (K8s).
 
-# K8s Componenets
+# K8s Components
 ## Pods
 1. **Pod(s)** are the smallest unit of K8s. A **Pod** (a pod of whales or a pea pod) is a group of one or more containers that share storage, network resources, and configuration for how to deploy themselves.
 2. In terms of **Docker** concepts, a **Pod** is a group of containers with shared file systems and namespaces. 
