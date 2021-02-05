@@ -25,6 +25,19 @@ Referenced from [Kubernetes Docs](https://kubernetes.io/docs/concepts/workloads/
 7. Node Management:
     1. The Kubelet on a Node self-registers itself to the Control Plane
     2. A human user manually adds a Node object.
+8. Master vs. Worker Nodes:
+    1. Master:
+        1. A node which specifically controls a set of worker nodes.
+        2. Resembles a Cluster in K8s
+        3. A Master Node is composed of:
+            1. Kube-API-Server : Acts as the 'front end' to the cluster. All external comms to the cluster is via the api server. 
+            2. Kube-Controller-Manager : Runs a set of controllers for running the cluster. Implements governaance across the                   cluster.
+            3. ETCD - Cluster state database
+            4. Kube-Scheduler : Schedules activities to the worker nodes based on events occurring on the etcd. It holds the nodes                resources plan to determine action of a triggered events. Example, the scheduler would figure out which worker node                would host a newly scheduled POD.
+        4. There can be multiple nodes within one cluster (within different AZs).
+    2. Worker:
+        1. Get's assigned pod(s) to host by the master node
+        2. Managed by the master node, a small piece that makes up the distributed workload
 
 ## Services 
 1. An abstract way to expose an application running on a set of Pods as a network service.
