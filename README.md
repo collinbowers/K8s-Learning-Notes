@@ -48,3 +48,40 @@ Referenced from [Kubernetes Docs](https://kubernetes.io/docs/concepts/workloads/
     4. This is where a clusterIP service-nginx(1.1.10.1) would come in. Rather than pod-python connecting to pod-nginx, it would connect to service-nginx which would forward it to any available pod-python. 
   
 Referenced from [Kubernetes services simply visually explained by Kim Wuestkamp](https://medium.com/swlh/kubernetes-services-simply-visually-explained-2d84e58d70e5)
+
+
+## Volumes / Storage
+1. What is a volume?
+    1. Volume is usually a directory with some data - Example: /var/lib
+    2. Volumes are accessible in containers in a pod
+2. Why? Kubernetes does not give you data persistance right out of the box.
+    1. Meaning that on a stateful pod restart, that state would be lost. 
+3. What do we need?
+    1. We need storage that does not depend on the pod lifecycle
+    2. Said storage also needs to be accessible to ALL nodes
+        1. Why? You might not know which node a pod might restart to
+    3. Storage needs to survive even if cluster crashes
+4. Volume types:
+    1. Persistent Volume aka *PV* (K8s component)
+        1. Think of it as a *cluster resource*
+        2. created via YAML file
+        3. Needs actual physical storage (local disk on cluster, external nfs server, cloud storage)
+        4. PV are NOT namespaced -> accessible to the whole cluster
+    2. Persistent Volume Claim aka *PVC*  
+        1. Applications have to claim the PV
+        2. PVC *claims* the volume with storage size and access type, and the PVC will find the PV that matches the criteria that is being requested
+        3. PVC is used within the Pod configuration
+    3. ConfigMap and/or Secret components   
+        1. Local volume
+        2. Not created by PV or PVC
+        3. Managed by k8s
+        4. Create CM or Secret component, then you can mount them into your pod via the pod yaml file
+5. Storage Class aka *SC* 
+    1. Storage Class provisions Persistent Volumes dynamically, when PVC claimes it
+    2. Storage backend is defined in the sc component, via `provisioner` attribute
+    3. Each storage backend has it's own provisioner : internal provisoner == 'kubernetes.io'
+    4. Workflow with SC:
+        1. Pod claims storage via PVC
+        2. PVC requests storage from SC
+        3. SC creates PV that meets the requirements of the claim
+6. Pod(s) can utilize multiple volume types at once
